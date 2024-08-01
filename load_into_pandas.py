@@ -26,19 +26,15 @@ finally:
 # extract only year from date
 df["year"] = pd.to_datetime(df["date"]).dt.year
 
-# it spotted several rows with errors in the names of neighbourhoods, let's drop them
-error_values = ["Error: 404", "Error: 502"]
-df_clean = df[~df["neighbourhood"].isin(error_values)]
-
 # aggregating data by neighbourhood, year, and crime_type
 aggregated_data = (
-    df_clean.groupby(["neighbourhood", "year", "crime_type"])
+    df.groupby(["neighbourhood", "year", "crime_type"])
     .size()
     .reset_index(name="incident_count")
 )
 
 # display the full table of aggregated data
-# print(aggregated_data.to_string())
+print(aggregated_data.to_string())
 
 # we can save it to .csv or .json and use for analytics and visualizations elsewhere
 # aggregated_data.to_csv('london_crime.csv', index=False)
